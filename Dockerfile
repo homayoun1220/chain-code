@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM registry.greenwebplus.com/docker/docker/library/node:16-alpine
 WORKDIR /home
 COPY . .
 RUN npm install
