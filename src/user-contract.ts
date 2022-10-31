@@ -117,6 +117,9 @@ export class UserContract extends Contract {
         //   await this.createUser(ctx, userId, EnrollmentID, 0);
         //   return "*****new user created successfully. to create gcoin by this ID enter with this user account and invoke the function again***";
         //} else {
+        if (!Number.isInteger(gcoin_num)) {
+            throw new Error("This ammount is unacceptable");
+        }
         if (gcoin_num < 0) {
             throw new Error(`This ammount is unacceptable`);
         } else {
@@ -171,6 +174,9 @@ export class UserContract extends Contract {
         receiver_enrollmentID: string,
         amount_Gcoin: number
     ): Promise<string> {
+        if (!Number.isInteger(amount_Gcoin)) {
+            throw new Error("This ammount is unacceptable");
+        }
         if (amount_Gcoin < 0) {
             throw new Error(`This ammount is unacceptable`);
         } else {
