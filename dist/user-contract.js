@@ -2,15 +2,42 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  */
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+var __decorate =
+    (this && this.__decorate) ||
+    function (decorators, target, key, desc) {
+        var c = arguments.length,
+            r =
+                c < 3
+                    ? target
+                    : desc === null
+                    ? (desc = Object.getOwnPropertyDescriptor(target, key))
+                    : desc,
+            d;
+        if (
+            typeof Reflect === "object" &&
+            typeof Reflect.decorate === "function"
+        )
+            r = Reflect.decorate(decorators, target, key, desc);
+        else
+            for (var i = decorators.length - 1; i >= 0; i--)
+                if ((d = decorators[i]))
+                    r =
+                        (c < 3
+                            ? d(r)
+                            : c > 3
+                            ? d(target, key, r)
+                            : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+var __metadata =
+    (this && this.__metadata) ||
+    function (k, v) {
+        if (
+            typeof Reflect === "object" &&
+            typeof Reflect.metadata === "function"
+        )
+            return Reflect.metadata(k, v);
+    };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserContract = void 0;
 const fabric_contract_api_1 = require("fabric-contract-api");
@@ -20,8 +47,11 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
         const data = await ctx.stub.getState(userId);
         return Boolean(data) && data.length > 0;
     }
-    async createUser(ctx, userId, EnrollmentID
-    //balance: number
+    async createUser(
+        ctx,
+        userId,
+        EnrollmentID
+        //balance: number
     ) {
         const exists = await this.userExists(ctx, userId);
         if (exists) {
@@ -40,20 +70,28 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
         }
         const naam = await this.getEnrollID(ctx, userId);
         const identity = ctx.clientIdentity;
-        const checkusr = identity.assertAttributeValue("hf.EnrollmentID", `${naam}`);
+        const checkusr = identity.assertAttributeValue(
+            "hf.EnrollmentID",
+            `${naam}`
+        );
         if (checkusr) {
             const data = await ctx.stub.getState(userId);
             const user = JSON.parse(data.toString());
             return user;
-        }
-        else {
+        } else {
             throw new Error(`*****you are not allowed for this operation*****`);
         }
     }
     async queryAllUsers(ctx) {
         const identity = ctx.clientIdentity;
-        const checkAttr = identity.assertAttributeValue("hf.Affiliation", "searcher");
-        const checkAttr2 = identity.assertAttributeValue("hf.Affiliation", "every");
+        const checkAttr = identity.assertAttributeValue(
+            "hf.Affiliation",
+            "searcher"
+        );
+        const checkAttr2 = identity.assertAttributeValue(
+            "hf.Affiliation",
+            "every"
+        );
         if (checkAttr || checkAttr2) {
             const startKey = "000";
             const endKey = "999";
@@ -67,8 +105,7 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
                     let Record;
                     try {
                         Record = JSON.parse(res.value.value.toString());
-                    }
-                    catch (err) {
+                    } catch (err) {
                         console.log(err);
                         Record = res.value.value.toString();
                     }
@@ -81,8 +118,7 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
                     return JSON.stringify(allResults);
                 }
             }
-        }
-        else {
+        } else {
             throw new Error("*****you dont have permission*****");
         }
     }
@@ -92,7 +128,11 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
         let shenase = userasuser.EnrollmentID;
         return shenase;
     }
-    async createGcoin(ctx, userId, EnrollmentID, gcoin_num //gcoin_num
+    async createGcoin(
+        ctx,
+        userId,
+        EnrollmentID,
+        gcoin_num //gcoin_num
     ) {
         // const exists: boolean = await this.userExists(ctx, userId);
         //if (!exists) {
@@ -104,15 +144,23 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
         }
         if (gcoin_num < 0) {
             throw new Error(`This ammount is unacceptable`);
-        }
-        else {
+        } else {
             const EnrollID = await this.getEnrollID(ctx, userId);
             const identity = ctx.clientIdentity;
-            const checkAttr = identity.assertAttributeValue("hf.Affiliation", "maker");
-            const checkAttr2 = identity.assertAttributeValue("hf.Affiliation", "every");
+            const checkAttr = identity.assertAttributeValue(
+                "hf.Affiliation",
+                "maker"
+            );
+            const checkAttr2 = identity.assertAttributeValue(
+                "hf.Affiliation",
+                "every"
+            );
             if (checkAttr || checkAttr2) {
                 const identity2 = ctx.clientIdentity;
-                const checkid = identity2.assertAttributeValue("hf.EnrollmentID", `${EnrollID}`);
+                const checkid = identity2.assertAttributeValue(
+                    "hf.EnrollmentID",
+                    `${EnrollID}`
+                );
                 if (checkid) {
                     const userinfo = await ctx.stub.getState(userId);
                     const useruser = JSON.parse(userinfo.toString());
@@ -120,25 +168,32 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
                     useruser.balance = newvalue;
                     const buffer = Buffer.from(JSON.stringify(useruser));
                     await ctx.stub.putState(userId, buffer);
+                } else {
+                    throw new Error(
+                        "*****you can not create coin by other IDs *****"
+                    );
                 }
-                else {
-                    throw new Error("*****you can not create coin by other IDs *****");
-                }
-            }
-            else {
-                throw new Error("*****you dont have permission to create Gcoin!*****");
+            } else {
+                throw new Error(
+                    "*****you dont have permission to create Gcoin!*****"
+                );
             }
             return "Gcoin Created successfully";
         }
     }
-    async transfervalue(ctx, sender, receiver, receiver_enrollmentID, amount_Gcoin) {
+    async transfervalue(
+        ctx,
+        sender,
+        receiver,
+        receiver_enrollmentID,
+        amount_Gcoin
+    ) {
         if (!Number.isInteger(amount_Gcoin)) {
             throw new Error("This ammount is unacceptable");
         }
         if (amount_Gcoin < 0) {
             throw new Error(`This ammount is unacceptable`);
-        }
-        else {
+        } else {
             const exists = await this.userExists(ctx, sender);
             if (!exists) {
                 throw new Error(`The user ${sender} does not exist`);
@@ -149,7 +204,10 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
             }
             const EnrollID = await this.getEnrollID(ctx, sender);
             const identity = ctx.clientIdentity;
-            const checkAttr = identity.assertAttributeValue(`hf.EnrollmentID`, `${EnrollID}`);
+            const checkAttr = identity.assertAttributeValue(
+                `hf.EnrollmentID`,
+                `${EnrollID}`
+            );
             if (checkAttr) {
                 const datasender = await ctx.stub.getState(sender);
                 const gcoinsender = JSON.parse(datasender.toString());
@@ -164,50 +222,99 @@ let UserContract = class UserContract extends fabric_contract_api_1.Contract {
                     gcoinreceiver.balance = newvalue2;
                     const buffer2 = Buffer.from(JSON.stringify(gcoinreceiver));
                     await ctx.stub.putState(receiver, buffer2);
-                }
-                else {
+                } else {
                     throw new Error("***not enough Ceredit***");
                 }
-            }
-            else {
-                throw new Error(`***Only ${EnrollID} can transfer money from this account!***`);
+            } else {
+                throw new Error(
+                    `***Only ${EnrollID} can transfer money from this account!***`
+                );
             }
             return "transaction performed successfully";
         }
     }
 };
-__decorate([
-    fabric_contract_api_1.Transaction(true),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [fabric_contract_api_1.Context, String, String]),
-    __metadata("design:returntype", Promise)
-], UserContract.prototype, "createUser", null);
-__decorate([
-    fabric_contract_api_1.Transaction(false),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [fabric_contract_api_1.Context, String]),
-    __metadata("design:returntype", Promise)
-], UserContract.prototype, "readUser", null);
-__decorate([
-    fabric_contract_api_1.Transaction(false),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [fabric_contract_api_1.Context]),
-    __metadata("design:returntype", Promise)
-], UserContract.prototype, "queryAllUsers", null);
-__decorate([
-    fabric_contract_api_1.Transaction(true),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [fabric_contract_api_1.Context, String, String, Number]),
-    __metadata("design:returntype", Promise)
-], UserContract.prototype, "createGcoin", null);
-__decorate([
-    fabric_contract_api_1.Transaction(true),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [fabric_contract_api_1.Context, String, String, String, Number]),
-    __metadata("design:returntype", Promise)
-], UserContract.prototype, "transfervalue", null);
-UserContract = __decorate([
-    fabric_contract_api_1.Info({ title: "UserContract", description: "green-coin chaincode" })
-], UserContract);
+__decorate(
+    [
+        fabric_contract_api_1.Transaction(true),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [
+            fabric_contract_api_1.Context,
+            String,
+            String,
+        ]),
+        __metadata("design:returntype", Promise),
+    ],
+    UserContract.prototype,
+    "createUser",
+    null
+);
+__decorate(
+    [
+        fabric_contract_api_1.Transaction(false),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [
+            fabric_contract_api_1.Context,
+            String,
+        ]),
+        __metadata("design:returntype", Promise),
+    ],
+    UserContract.prototype,
+    "readUser",
+    null
+);
+__decorate(
+    [
+        fabric_contract_api_1.Transaction(false),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [fabric_contract_api_1.Context]),
+        __metadata("design:returntype", Promise),
+    ],
+    UserContract.prototype,
+    "queryAllUsers",
+    null
+);
+__decorate(
+    [
+        fabric_contract_api_1.Transaction(true),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [
+            fabric_contract_api_1.Context,
+            String,
+            String,
+            Number,
+        ]),
+        __metadata("design:returntype", Promise),
+    ],
+    UserContract.prototype,
+    "createGcoin",
+    null
+);
+__decorate(
+    [
+        fabric_contract_api_1.Transaction(true),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [
+            fabric_contract_api_1.Context,
+            String,
+            String,
+            String,
+            Number,
+        ]),
+        __metadata("design:returntype", Promise),
+    ],
+    UserContract.prototype,
+    "transfervalue",
+    null
+);
+UserContract = __decorate(
+    [
+        fabric_contract_api_1.Info({
+            title: "UserContract",
+            description: "green-coin chaincode",
+        }),
+    ],
+    UserContract
+);
 exports.UserContract = UserContract;
 //# sourceMappingURL=user-contract.js.map
